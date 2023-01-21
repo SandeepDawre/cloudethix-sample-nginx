@@ -24,7 +24,7 @@ stages {
         }
         stage('Remove Unused docker image') {
             steps{
-                sh "docker rmi $registry:$$GIT_COMMIT"
+                sh "docker rmi $registry:$GIT_COMMIT"
                 sh "docker rmi $registry:latest"
                 }
         }
