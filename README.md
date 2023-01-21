@@ -1,0 +1,1 @@
+Hello cloudethix-sample-nginx
