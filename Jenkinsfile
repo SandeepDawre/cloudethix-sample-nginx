@@ -1,7 +1,8 @@
 pipeline {
     agent any 
     environment {
-        registry = "https://registry.hub.docker.com/teamcloudethix/cloudethix-sample-nginx"
+        registryURI = "https://registry.hub.docker.com/"
+        registry = "teamcloudethix/cloudethix-sample-nginx"
         registryCredential = '02_docker_hub_creds'
         }
 stages {
@@ -13,9 +14,12 @@ stages {
             }
         }
         stage('Deploy Image') {
+            environment {
+                registry_endpoint = "${env.registryURI}" + "${env.registry}"
+            }
             steps{
                 script {
-                    docker.withRegistry( registry, registryCredential ) {
+                    docker.withRegistry( registry_endpoint, registryCredential ) {
                         app.push()
                         app.push(latest)
                     }   
