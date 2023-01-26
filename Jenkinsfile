@@ -7,13 +7,19 @@ pipeline {
         }
 stages {
         stage('Building image from project dir') {
+            environment {
+                registry_endpoint = "${env.registryURI}" + "${env.registry}"
+            }
             steps{
                 script {
-                def app = docker.build registry + ":$GIT_COMMIT"
+                def app = docker.build("${env.registry}" + ":$GIT_COMMIT")
+                docker.withRegistry( registry_endpoint, registryCredential ) {
+                        app.push()
+                        app.push(latest)
                 }
             }
         }
-        stage('Deploy Image') {
+/*        stage('Deploy Image') {
             environment {
                 registry_endpoint = "${env.registryURI}" + "${env.registry}"
             }
@@ -26,10 +32,10 @@ stages {
                 }
             }   
         }
+*/ 
         stage('Remove Unused docker image') {
             steps{
                 sh "docker rmi $registry:$GIT_COMMIT"
-                sh "docker rmi $registry:latest"
                 }
         }
     }
