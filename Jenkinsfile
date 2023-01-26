@@ -15,7 +15,6 @@ stages {
                 def app = docker.build("${env.registry}" + ":$GIT_COMMIT")
                 docker.withRegistry( registry_endpoint, registryCredential ) {
                         app.push()
-                        app.push(latest)
                 }
             }
         }
