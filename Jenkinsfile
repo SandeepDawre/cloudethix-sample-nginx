@@ -19,6 +19,7 @@ stages {
                 }
             }
         }
+        }
 /*        stage('Deploy Image') {
             environment {
                 registry_endpoint = "${env.registryURI}" + "${env.registry}"
