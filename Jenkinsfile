@@ -9,10 +9,11 @@ stages {
         stage('Building image from project dir') {
             environment {
                 registry_endpoint = "${env.registryURI}" + "${env.registry}"
+                tag_commit_id     = "${env.registry}" + ":$GIT_COMMIT"
             }
             steps{
                 script {
-                def app = docker.build("${env.registry}" + ":$GIT_COMMIT")
+                def app = docker.build(tag_commit_id)
                 docker.withRegistry( registry_endpoint, registryCredential ) {
                         app.push()
                 }
